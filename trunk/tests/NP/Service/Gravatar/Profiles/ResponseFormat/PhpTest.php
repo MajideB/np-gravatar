@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles PHP response formats tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_ResponseFormat
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -29,20 +33,15 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_PhpTest extends PHPUnit_Framew
         $this->_phpResponseFormat = new NP_Service_Gravatar_Profiles_ResponseFormat_Php();
     }
 
-    public function testPhpResponseFormatId()
-    {
-        $this->assertSame($this->_phpResponseFormat->getResponseFormatId(), 'php');
-    }
-
     public function testProfileFromHttpResponseInvalidResponseBodyShouldThrowException()
     {
         $this->setExpectedException('NP_Service_Gravatar_Profiles_ResponseFormat_Exception');
 
         $profile = $this->_phpResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'text/plain'),
-                    'invalid'
+                200,
+                array('Content-Type' => 'text/plain'),
+                'invalid'
            )
         );
     }
@@ -51,9 +50,9 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_PhpTest extends PHPUnit_Framew
     {
         $retval = $this->_phpResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'text/plain'),
-                    's:14:"User not found";'
+                200,
+                array('Content-Type' => 'text/plain'),
+                's:14:"User not found";'
            )
         );
 
@@ -64,9 +63,9 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_PhpTest extends PHPUnit_Framew
     {
         $profile = $this->_phpResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'text/plain'),
-                    file_get_contents(dirname(__FILE__) . '/_files/php_response')
+                200,
+                array('Content-Type' => 'text/plain'),
+                file_get_contents(dirname(__FILE__) . '/_files/php_response')
            )
         );
         

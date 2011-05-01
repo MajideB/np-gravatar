@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles Background class tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_Profile
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -23,7 +27,7 @@ class NP_Service_Gravatar_Profiles_Profile_BackgroundTest extends PHPUnit_Framew
 {
     protected $_profileBackground;
 
-    protected $_backgroundData = array(
+    protected static $_backgroundData = array(
         'color'=>'#d1d1d1',
         'position'=>'left',
         'repeat'=>'repeat',
@@ -37,11 +41,11 @@ class NP_Service_Gravatar_Profiles_Profile_BackgroundTest extends PHPUnit_Framew
 
     public function testConstructor()
     {
-        $profileBackground = new NP_Service_Gravatar_Profiles_Profile_Background($this->_backgroundData);
+        $profileBackground = new NP_Service_Gravatar_Profiles_Profile_Background(self::$_backgroundData);
 
-        $this->assertSame($profileBackground->color, $this->_backgroundData['color']); //__get
-        $this->assertSame($profileBackground->getPosition(), $this->_backgroundData['position']);
-        $this->assertSame($profileBackground->repeat, $this->_backgroundData['repeat']);
+        $this->assertSame($profileBackground->color, self::$_backgroundData['color']); //__get
+        $this->assertSame($profileBackground->getPosition(), self::$_backgroundData['position']);
+        $this->assertSame($profileBackground->repeat, self::$_backgroundData['repeat']);
         $this->assertTrue($profileBackground->getUrl() instanceof Zend_Uri_Http);
     }
 

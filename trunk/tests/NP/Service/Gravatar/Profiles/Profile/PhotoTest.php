@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles Photo class tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_Profile
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -23,7 +27,7 @@ class NP_Service_Gravatar_Profiles_Profile_PhotoTest extends PHPUnit_Framework_T
 {
     protected $_profilePhoto;
 
-    protected $_validUrl = 'http://www.gravatar.com/userimage/1/1111';
+    protected static $_validUrl = 'http://www.gravatar.com/userimage/1/1111';
 
     protected function setUp()
     {
@@ -33,9 +37,8 @@ class NP_Service_Gravatar_Profiles_Profile_PhotoTest extends PHPUnit_Framework_T
     public function testConstructor()
     {
         $photo = new NP_Service_Gravatar_Profiles_Profile_Photo(array(
-                'value'=>$this->_validUrl
-            )
-        );
+            'value'=>self::$_validUrl
+        ));
 
         $this->assertTrue($photo->getType() == null);
         $this->assertTrue($photo->value instanceof Zend_Uri_Http); //__get
@@ -57,7 +60,7 @@ class NP_Service_Gravatar_Profiles_Profile_PhotoTest extends PHPUnit_Framework_T
 
     public function testSettingValueShouldBeNormalizedToZendUriHttp()
     {
-        $this->_profilePhoto->setValue($this->_validUrl);
+        $this->_profilePhoto->setValue(self::$_validUrl);
 
         $this->assertTrue($this->_profilePhoto->value instanceof Zend_Uri_Http);
     }

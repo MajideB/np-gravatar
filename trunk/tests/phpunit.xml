@@ -1,0 +1,5 @@
+<phpunit bootstrap="./TestHelper.php">
+    <testsuite name="NP-Gravatar Test Suite">
+        <directory>./</directory>
+    </testsuite>
+</phpunit>

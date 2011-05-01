@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles Email class tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_Profile
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -23,7 +27,7 @@ class NP_Service_Gravatar_Profiles_Profile_EmailTest extends PHPUnit_Framework_T
 {
     protected $_email;
 
-    protected $_emailData = array('value'=>'foo@bar.com', 'primary'=>true);
+    protected static $_emailData = array('value'=>'foo@bar.com', 'primary'=>true);
 
     protected function setUp()
     {
@@ -32,9 +36,9 @@ class NP_Service_Gravatar_Profiles_Profile_EmailTest extends PHPUnit_Framework_T
 
     public function testConstructor()
     {
-        $email = new NP_Service_Gravatar_Profiles_Profile_Email($this->_emailData);
+        $email = new NP_Service_Gravatar_Profiles_Profile_Email(self::$_emailData);
 
-        $this->assertSame($email->value, $this->_emailData['value']); //__get
+        $this->assertSame($email->value, self::$_emailData['value']); //__get
         $this->assertTrue($email->getPrimary());
     }
 
