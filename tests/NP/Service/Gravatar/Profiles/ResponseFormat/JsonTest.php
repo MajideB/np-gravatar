@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles JSON response formats tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_ResponseFormat
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -29,20 +33,15 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_JsonTest extends PHPUnit_Frame
         $this->_jsonResponseFormat = new NP_Service_Gravatar_Profiles_ResponseFormat_Json();
     }
 
-    public function testJsonResponseFormatId()
-    {
-        $this->assertSame($this->_jsonResponseFormat->getResponseFormatId(), 'json');
-    }
-
     public function testProfileFromHttpResponseInvalidResponseBodyShouldThrowException()
     {
         $this->setExpectedException('NP_Service_Gravatar_Profiles_ResponseFormat_Exception');
 
         $profile = $this->_jsonResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'application/json'),
-                    'invalid'
+                200,
+                array('Content-Type' => 'application/json'),
+                'invalid'
            )
         );
     }
@@ -51,9 +50,9 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_JsonTest extends PHPUnit_Frame
     {
         $retval = $this->_jsonResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'application/json'),
-                    '{"foo":"bar"}'
+                200,
+                array('Content-Type' => 'application/json'),
+                '{"foo":"bar"}'
            )
         );
 
@@ -64,9 +63,9 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_JsonTest extends PHPUnit_Frame
     {
         $profile = $this->_jsonResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'application/json'),
-                    file_get_contents(dirname(__FILE__) . '/_files/json_response.json')
+                200,
+                array('Content-Type' => 'application/json'),
+                file_get_contents(dirname(__FILE__) . '/_files/json_response.json')
            )
         );
         

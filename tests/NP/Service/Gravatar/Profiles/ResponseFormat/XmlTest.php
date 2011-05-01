@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles XML response formats tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_ResponseFormat
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -29,20 +33,15 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_XmlTest extends PHPUnit_Framew
         $this->_xmlResponseFormat = new NP_Service_Gravatar_Profiles_ResponseFormat_Xml();
     }
 
-    public function testXmlResponseFormatId()
-    {
-        $this->assertSame($this->_xmlResponseFormat->getResponseFormatId(), 'xml');
-    }
-
     public function testProfileFromHttpResponseInvalidResponseBodyShouldThrowException()
     {
         $this->setExpectedException('NP_Service_Gravatar_Profiles_ResponseFormat_Exception');
 
         $profile = $this->_xmlResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'application/xml'),
-                    'invalid'
+                200,
+                array('Content-Type' => 'application/xml'),
+                'invalid'
            )
         );
     }
@@ -51,9 +50,9 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_XmlTest extends PHPUnit_Framew
     {
         $profile = $this->_xmlResponseFormat->profileFromHttpResponse(
             new Zend_Http_Response(
-                    200,
-                    array('Content-Type' => 'application/xml'),
-                    file_get_contents(dirname(__FILE__) . '/_files/xml_response.xml')
+                200,
+                array('Content-Type' => 'application/xml'),
+                file_get_contents(dirname(__FILE__) . '/_files/xml_response.xml')
            )
         );
         

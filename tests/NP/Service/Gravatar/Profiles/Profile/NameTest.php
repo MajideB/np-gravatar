@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles Name class tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_Profile
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -21,7 +25,7 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Name.php';
 
 class NP_Service_Gravatar_Profiles_Profile_NameTest extends PHPUnit_Framework_TestCase
 {
-    protected $_nameData = array(
+    protected static $_nameData = array(
         'givenName'=>'Foo',
         'familyName'=>'Bar',
         'formatted'=>'Foo Bar'
@@ -29,10 +33,10 @@ class NP_Service_Gravatar_Profiles_Profile_NameTest extends PHPUnit_Framework_Te
 
     public function testConstructor()
     {
-        $name = new NP_Service_Gravatar_Profiles_Profile_Name($this->_nameData);
+        $name = new NP_Service_Gravatar_Profiles_Profile_Name(self::$_nameData);
 
-        $this->assertSame($name->givenName, $this->_nameData['givenName']); //__get
-        $this->assertSame($name->getFamilyName(), $this->_nameData['familyName']);
-        $this->assertSame($name->getFormatted(), $this->_nameData['formatted']);
+        $this->assertSame($name->givenName, self::$_nameData['givenName']); //__get
+        $this->assertSame($name->getFamilyName(), self::$_nameData['familyName']);
+        $this->assertSame($name->getFormatted(), self::$_nameData['formatted']);
     }
 }

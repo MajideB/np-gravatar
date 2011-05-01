@@ -11,6 +11,9 @@
 /**
  * NP_Service_Gravatar_XmlRpc tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_XmlRpc
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */

@@ -11,6 +11,8 @@
 /**
  * NP_View_Helper_Gravatar tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_View_Helper
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */

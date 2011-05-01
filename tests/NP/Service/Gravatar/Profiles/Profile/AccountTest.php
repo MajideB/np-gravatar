@@ -11,6 +11,10 @@
 /**
  * NP_Service_Gravatar_Profiles Account class tests.
  *
+ * @group NP-Gravatar
+ * @group NP-Gravatar_Service
+ * @group NP-Gravatar_Service_Profiles
+ * @group NP-Gravatar_Service_Profiles_Profile
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
@@ -23,7 +27,7 @@ class NP_Service_Gravatar_Profiles_Profile_AccountTest extends PHPUnit_Framework
 {
     protected $_profileAccount;
 
-    protected $_acountData = array(
+    protected static $_accountData = array(
         'domain'=>'facebook.com',
         'username'=>'foobar',
         'display'=>'foobar',
@@ -39,14 +43,14 @@ class NP_Service_Gravatar_Profiles_Profile_AccountTest extends PHPUnit_Framework
 
     public function testConstructor()
     {
-        $account = new NP_Service_Gravatar_Profiles_Profile_Account($this->_acountData);
+        $account = new NP_Service_Gravatar_Profiles_Profile_Account(self::$_accountData);
 
-        $this->assertSame($account->domain, $this->_acountData['domain']); //__get
-        $this->assertSame($account->getUsername(), $this->_acountData['username']);
-        $this->assertSame($account->display, $this->_acountData['display']);
+        $this->assertSame($account->domain, self::$_accountData['domain']); //__get
+        $this->assertSame($account->getUsername(), self::$_accountData['username']);
+        $this->assertSame($account->display, self::$_accountData['display']);
         $this->assertTrue($account->getUrl() instanceof Zend_Uri_Http);
         $this->assertTrue($account->verified);
-        $this->assertSame($account->getShortname(), $this->_acountData['shortname']);
+        $this->assertSame($account->getShortname(), self::$_accountData['shortname']);
     }
 
     public function testInvalidUrlShouldThrowException()
