@@ -9,6 +9,7 @@
  */
 
 require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
+require_once 'NP/Service/Gravatar/Utility.php';
 
 /**
  * Profile of some Gravatar's user.
@@ -16,7 +17,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_Profile_Abstract
+class NP_Service_Gravatar_Profiles_Profile
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Profile id.
@@ -154,7 +156,6 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setProfileUrl($url)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_profileUrl = NP_Service_Gravatar_Utility::normalizeUri($url);
 
         return $this;
@@ -201,7 +202,6 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setThumbnailUrl($thumbnailUrl)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_thumbnailUrl = NP_Service_Gravatar_Utility::normalizeUri($thumbnailUrl);
 
         return $this;
@@ -225,7 +225,7 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setPhotos(array $photos)
     {
-        $this->_photos = NP_Service_Gravatar_Utility::normalizeArrayPropertyValue('Photo', $photos);
+        $this->_photos = $this->_normalizeArrayPropertyValue('Photo', $photos);
 
         return $this;
     }
@@ -248,7 +248,7 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setProfileBackground($background)
     {
-        $this->_profileBackground = NP_Service_Gravatar_Utility::normalizePropertyValue('Background', $background);
+        $this->_profileBackground = $this->_normalizePropertyValue('Background', $background);
 
         return $this;
     }
@@ -271,7 +271,7 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setName($name)
     {
-        $this->_name = NP_Service_Gravatar_Utility::normalizePropertyValue('Name', $name);
+        $this->_name = $this->_normalizePropertyValue('Name', $name);
         
         return $this;
     }
@@ -363,7 +363,7 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setPhoneNumbers(array $phoneNumbers)
     {
-        $this->_phoneNumbers = NP_Service_Gravatar_Utility::normalizeArrayPropertyValue('PhoneNumber', $phoneNumbers);
+        $this->_phoneNumbers = $this->_normalizeArrayPropertyValue('PhoneNumber', $phoneNumbers);
 
         return $this;
     }
@@ -386,7 +386,7 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setEmails(array $emails)
     {
-        $this->_emails = NP_Service_Gravatar_Utility::normalizeArrayPropertyValue('Email', $emails);
+        $this->_emails = $this->_normalizeArrayPropertyValue('Email', $emails);
 
         return $this;
     }
@@ -409,7 +409,7 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setIms(array $ims)
     {
-        $this->_ims = NP_Service_Gravatar_Utility::normalizeArrayPropertyValue('Im', $ims);
+        $this->_ims = $this->_normalizeArrayPropertyValue('Im', $ims);
 
         return $this;
     }
@@ -432,13 +432,13 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
      */
     public function setAccounts(array $accounts)
     {
-        $this->_accounts = NP_Service_Gravatar_Utility::normalizeArrayPropertyValue('Account', $accounts);
+        $this->_accounts = $this->_normalizeArrayPropertyValue('Account', $accounts);
 
         return $this;
     }
 
     /**
-     * Gets $_ims.
+     * Gets $_accounts.
      *
      * @return array
      */
@@ -450,12 +450,12 @@ class NP_Service_Gravatar_Profiles_Profile extends NP_Service_Gravatar_Profiles_
     /**
      * Sets $_urls.
      *
-     * @param array $iurls
+     * @param array $urls
      * @return NP_Service_Gravatar_Profiles_Profile
      */
     public function setUrls(array $urls)
     {
-        $this->_urls = NP_Service_Gravatar_Utility::normalizeArrayPropertyValue('Url', $urls);
+        $this->_urls = $this->_normalizeArrayPropertyValue('Url', $urls);
 
         return $this;
     }

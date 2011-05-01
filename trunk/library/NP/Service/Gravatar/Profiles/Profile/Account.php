@@ -9,6 +9,7 @@
  */
 
 require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
+require_once 'NP/Service/Gravatar/Utility.php';
 
 /**
  * Verified account.
@@ -16,7 +17,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Account extends NP_Service_Gravatar_Profiles_Profile_Abstract
+class NP_Service_Gravatar_Profiles_Profile_Account
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Domain.
@@ -137,7 +139,6 @@ class NP_Service_Gravatar_Profiles_Profile_Account extends NP_Service_Gravatar_P
      */
     public function setUrl($url)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_url = NP_Service_Gravatar_Utility::normalizeUri($url);
 
         return $this;
@@ -161,7 +162,6 @@ class NP_Service_Gravatar_Profiles_Profile_Account extends NP_Service_Gravatar_P
      */
     public function setVerified($verified)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_verified = NP_Service_Gravatar_Utility::normalizeBool($verified);
 
         return $this;

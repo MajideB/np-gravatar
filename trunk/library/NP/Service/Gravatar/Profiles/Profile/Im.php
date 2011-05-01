@@ -16,6 +16,7 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/TypeValue.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Im extends NP_Service_Gravatar_Profiles_Profile_TypeValue
+class NP_Service_Gravatar_Profiles_Profile_Im
+    extends NP_Service_Gravatar_Profiles_Profile_TypeValue
 {
 }

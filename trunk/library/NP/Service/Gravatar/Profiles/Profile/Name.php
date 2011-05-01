@@ -16,7 +16,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Name extends NP_Service_Gravatar_Profiles_Profile_Abstract
+class NP_Service_Gravatar_Profiles_Profile_Name
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Given name.

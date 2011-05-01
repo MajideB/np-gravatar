@@ -9,6 +9,7 @@
  */
 
 require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
+require_once 'NP/Service/Gravatar/Utility.php';
 
 /**
  * Profile background info.
@@ -16,7 +17,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Background extends NP_Service_Gravatar_Profiles_Profile_Abstract
+class NP_Service_Gravatar_Profiles_Profile_Background
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Background color (hex).
@@ -123,7 +125,6 @@ class NP_Service_Gravatar_Profiles_Profile_Background extends NP_Service_Gravata
      */
     public function setUrl($url)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_url = NP_Service_Gravatar_Utility::normalizeUri($url);
 
         return $this;

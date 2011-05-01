@@ -17,6 +17,13 @@
 abstract class NP_Service_Gravatar_Profiles_Profile_Abstract implements ArrayAccess
 {
     /**
+     * Plugin loader for profile classes.
+     *
+     * @var Zend_Loader_PluginLoader
+     */
+    protected static $_pluginLoader;
+
+    /**
 	 * Constructor.
 	 *
 	 * @param array Options for object's initialization.
@@ -27,6 +34,23 @@ abstract class NP_Service_Gravatar_Profiles_Profile_Abstract implements ArrayAcc
         if ($options) {
             $this->setOptions($options);
         }
+    }
+
+    /**
+     * Gets profile classes plugin loader.
+     *
+     * @return Zend_Loader_PluginLoader
+     */
+    public static function getPluginLoader()
+    {
+        if (!self::$_pluginLoader) {
+            require_once 'Zend/Loader/PluginLoader.php';
+            self::$_pluginLoader = new Zend_Loader_PluginLoader(array(
+                'NP_Service_Gravatar_Profiles_Profile_'=>'NP/Service/Gravatar/Profiles/Profile/')
+            );
+        }
+
+        return self::$_pluginLoader;
     }
 
     /**
@@ -71,10 +95,73 @@ abstract class NP_Service_Gravatar_Profiles_Profile_Abstract implements ArrayAcc
         $method = 'get' . ucfirst($name);
         if (method_exists($this, $method)) { //Only if property exists.
             return $this->$method();
-        }
-        else {
+        } else {
             return null;
         }
+    }
+
+    /**
+     * Generates and returns value for some array-type property in some
+     * of Profile classes, based on supplied $data array, and creates
+     * $profileClass instances if necessary, so that value of $property
+     * is collection of $profileClass instances.
+     *
+     * @param string $profileClass Name of the profile class.
+     * @param array $data Data that needs to be set for $property.
+     * @return array|null
+     */
+    protected function _normalizeArrayPropertyValue($profileClass, array $data)
+    {
+        $className = '';
+        try {
+            $className = self::getPluginLoader()->load($profileClass);
+        } catch (Zend_Loader_PluginLoader_Exception $e) {
+            require_once 'NP/Service/Gravatar/Exception.php';
+            throw new NP_Service_Gravatar_Exception($e->getMessage());
+        }
+
+        $value = array();
+
+        $current = current($data);
+        if (!is_array($current) && !$current instanceof $className) {
+            $data = array($data);
+        }
+
+        foreach ($data as $val) {
+            $profileInstance = $this->_normalizePropertyValue($profileClass, $val);
+            if ($profileInstance !== null) {
+                $value[] = $profileInstance;
+            }
+        }
+
+        //Valid value? Return it. Otherwise, return null.
+        return (!empty($value)) ? $value : null;
+    }
+
+    /**
+     * Generates and returns value for some property that holds instance
+     * of some Profile class.
+     *
+     * @param string $profileClass
+     * @param mixed $value
+     * @return NP_Service_Gravatar_Profiles_Profile_Abstract|null
+     */
+    protected function _normalizePropertyValue($profileClass, $value)
+    {
+        try {
+            $className = self::getPluginLoader()->load($profileClass);
+        } catch (Zend_Loader_PluginLoader_Exception $e) {
+            require_once 'NP/Service/Gravatar/Exception.php';
+            throw new NP_Service_Gravatar_Exception($e->getMessage());
+        }
+
+        if ($value instanceof $className) { //Already instantiated?
+            return $value;
+        } elseif (is_array($value)) { //Array? Generate profile instance.
+            return new $className($value);
+        }
+
+        return null;
     }
 
     //ArrayAccess interface implementation
