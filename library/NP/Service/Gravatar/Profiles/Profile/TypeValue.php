@@ -11,14 +11,15 @@
 require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
 
 /**
- * As profile parts containing "type" and "value" properties is
- * common, this abstract class provides getters and setters for
- * those fields.
+ * As it is common that some profile parts are based only on
+ * "type" and "value" properties, this abstract class is a
+ * base for such cases.
  *
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-abstract class NP_Service_Gravatar_Profiles_Profile_TypeValue extends NP_Service_Gravatar_Profiles_Profile_Abstract
+abstract class NP_Service_Gravatar_Profiles_Profile_TypeValue
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Some type.

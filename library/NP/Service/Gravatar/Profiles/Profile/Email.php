@@ -9,6 +9,7 @@
  */
 
 require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
+require_once 'NP/Service/Gravatar/Utility.php';
 
 /**
  * User's email address.
@@ -16,7 +17,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Email extends NP_Service_Gravatar_Profiles_Profile_Abstract
+class NP_Service_Gravatar_Profiles_Profile_Email
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Primary email?
@@ -40,7 +42,6 @@ class NP_Service_Gravatar_Profiles_Profile_Email extends NP_Service_Gravatar_Pro
      */
     public function setPrimary($primary)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_primary = NP_Service_Gravatar_Utility::normalizeBool($primary);
         
         return $this;

@@ -9,6 +9,7 @@
  */
 
 require_once 'NP/Service/Gravatar/Profiles/Profile/TypeValue.php';
+require_once 'NP/Service/Gravatar/Utility.php';
 
 /**
  * Profile photo.
@@ -16,7 +17,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/TypeValue.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Photo extends NP_Service_Gravatar_Profiles_Profile_TypeValue
+class NP_Service_Gravatar_Profiles_Profile_Photo
+    extends NP_Service_Gravatar_Profiles_Profile_TypeValue
 {
     /**
      * Defined by NP_Service_Gravatar_Profiles_Profile_TypeValue.
@@ -29,7 +31,6 @@ class NP_Service_Gravatar_Profiles_Profile_Photo extends NP_Service_Gravatar_Pro
     public function setValue($value)
     {
         //Making sure that $_value is Zend_Uri_Http instance.
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_value = NP_Service_Gravatar_Utility::normalizeUri($value);
         
         return $this;

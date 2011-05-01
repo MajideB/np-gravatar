@@ -9,6 +9,7 @@
  */
 
 require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
+require_once 'NP/Service/Gravatar/Utility.php';
 
 /**
  * Personal link.
@@ -16,7 +17,8 @@ require_once 'NP/Service/Gravatar/Profiles/Profile/Abstract.php';
  * @author Nikola Posa <posa.nikola@gmail.com>
  * @license New BSD License
  */
-class NP_Service_Gravatar_Profiles_Profile_Url extends NP_Service_Gravatar_Profiles_Profile_Abstract
+class NP_Service_Gravatar_Profiles_Profile_Url
+    extends NP_Service_Gravatar_Profiles_Profile_Abstract
 {
     /**
      * Link's title.
@@ -63,7 +65,6 @@ class NP_Service_Gravatar_Profiles_Profile_Url extends NP_Service_Gravatar_Profi
      */
     public function setValue($value)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $this->_value = NP_Service_Gravatar_Utility::normalizeUri($value);
 
         return $this;
