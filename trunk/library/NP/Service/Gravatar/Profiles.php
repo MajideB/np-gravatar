@@ -8,6 +8,8 @@
  * bundled with this package in the file LICENSE.txt.
  */
 
+require_once 'NP/Service/Gravatar/Utility.php';
+
 /**
  * Client for consuming profile information, based on the primary
  * email address of some user.
@@ -29,27 +31,59 @@ class NP_Service_Gravatar_Profiles
     /**
      * Response format.
      * 
-     * @var NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
+     * @var NP_Service_Gravatar_Profiles_ResponseFormat_Abstract|string
      */
-    protected $_responseFormat;
+    protected $_responseFormat = 'php';
 
     /**
-     * Default response format.
+     * Plugin loader for response format classes.
      *
-     * @var NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
+     * @var Zend_Loader_PluginLoader
      */
-    protected static $_defaultResponseFormat;
+    protected static $_pluginLoader;
 
     /**
      * Constructor.
      *
      * @return void
      */
-    public function  __construct()
+    public function  __construct($responseFormat = null)
     {
-        $this->_setupResponseFormat();
+        if (null !== $responseFormat) {
+            $this->setResponseFormat($responseFormat);
+        }
     }
 
+    /**
+     * Gets plugin loader instance.
+     *
+     * @return Zend_Loader_PluginLoader
+     */
+    protected static function _getPluginLoader()
+    {
+        if (!self::$_pluginLoader) {
+            require_once 'Zend/Loader/PluginLoader.php';
+            self::$_pluginLoader = new Zend_Loader_PluginLoader(array(
+                'NP_Service_Gravatar_Profiles_ResponseFormat_'=>'NP/Service/Gravatar/Profiles/ResponseFormat/')
+            );
+        }
+
+        return self::$_pluginLoader;
+    }
+
+    /**
+     * Sets Http_Client which will be used for sending requests.
+     * 
+     * @param Zend_Http_Client $httpClient
+     * @return NP_Service_Gravatar_Profiles
+     */
+    public function setHttpClient(Zend_Http_Client $httpClient)
+    {
+        $this->_httpClient = $httpClient;
+
+        return $this;
+    }
+    
     /**
      * Gets HTTP client instance.
      *
@@ -66,30 +100,12 @@ class NP_Service_Gravatar_Profiles
     }
 
     /**
-     * Sets up response format instance.
-     *
-     * @return void
-     */
-    protected function _setupResponseFormat()
-    {
-        if (!$this->_responseFormat) {
-            if (!self::$_defaultResponseFormat instanceof NP_Service_Gravatar_Profiles_ResponseFormat_Abstract) {
-                require_once 'NP/Service/Gravatar/Profiles/ResponseFormat/Php.php';
-                $this->_responseFormat = new NP_Service_Gravatar_Profiles_ResponseFormat_Php();
-            }
-            else {
-                $this->_responseFormat = self::$_defaultResponseFormat;
-            }
-        }
-    }
-
-    /**
      * Sets the response format.
      *
-     * @param NP_Service_Gravatar_Profiles_ResponseFormat_Abstract $responseFormat
+     * @param NP_Service_Gravatar_Profiles_ResponseFormat_Abstract|string $responseFormat
      * @return NP_Service_Gravatar
      */
-    public function setResponseFormat(NP_Service_Gravatar_Profiles_ResponseFormat_Abstract $responseFormat)
+    public function setResponseFormat($responseFormat)
     {
         $this->_responseFormat = $responseFormat;
         
@@ -103,28 +119,12 @@ class NP_Service_Gravatar_Profiles
      */
     public function getResponseFormat()
     {
+        if (!$this->_responseFormat instanceof NP_Service_Gravatar_Profiles_ResponseFormat_Abstract) {
+            $class = self::_getPluginLoader()->load((string)$this->_responseFormat);
+            $this->_responseFormat = new $class();
+        }
+        
         return $this->_responseFormat;
-    }
-
-    /**
-     * Sets default response format.
-     *
-     * @param NP_Service_Gravatar_Profiles_ResponseFormat_Abstract $responseFormat
-     * @return void
-     */
-    public static function setDefaultResponseFormat(NP_Service_Gravatar_Profiles_ResponseFormat_Abstract $responseFormat)
-    {
-        self::$_defaultResponseFormat = $responseFormat;
-    }
-
-    /**
-     * Gets default response format.
-     *
-     * @return NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
-     */
-    public static function getDefaultResponseFormat()
-    {
-        return self::$_defaultResponseFormat;
     }
 
     /**
@@ -141,24 +141,23 @@ class NP_Service_Gravatar_Profiles
      */
     public function getProfileInfo($email, $rawResponse = false)
     {
-        require_once 'NP/Service/Gravatar/Utility.php';
         $email = strtolower(trim((string)$email));
         $hash = NP_Service_Gravatar_Utility::emailHash($email);
 
         $responseFormat = $this->getResponseFormat();
 
-        $response = $this->getHttpClient()->setMethod(Zend_Http_Client::GET)
-              ->setUri(self::GRAVATAR_SERVER . '/' . $hash . '.' . $responseFormat->__toString())
-              ->request();
+        $response = $this->getHttpClient()
+            ->setMethod(Zend_Http_Client::GET)
+            ->setUri(self::GRAVATAR_SERVER . '/' . $hash . '.' . $responseFormat->__toString())
+            ->request();
 
         $reflected = new ReflectionObject($responseFormat);
         if (
-        $reflected->implementsInterface('NP_Service_Gravatar_Profiles_ResponseFormat_ParserInterface')
-        && !$rawResponse
+            $reflected->implementsInterface('NP_Service_Gravatar_Profiles_ResponseFormat_ParserInterface')
+            && !$rawResponse
          ) {
             return $responseFormat->profileFromHttpResponse($response);
-        }
-        else {
+        } else {
             return $response;
         }
     }

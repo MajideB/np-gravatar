@@ -27,6 +27,10 @@ FEATURES
 - XML-RPC client which provides interface to the Gravatar XML-RPC API
 - View helper for rendering Gravatar image URLs
 
+VERSION INFORMATION
+-------------------
+NP-Gravatar 1.1
+
 INSTALLATION
 ------------
 Copy NP folder, with all of its contents, in some of your project's 
@@ -54,7 +58,8 @@ foreach($profile->getPhotos() as $photo) {
 }
 
 //Changing response format to JSON:
-$gravatarService->setResponseFormat(new NP_Service_Gravatar_Profiles_ResponseFormat_Json());
+//Note that, esponse format can be supplied as string, too.
+$gravatarService->setResponseFormat('json'); 
 //Getting profile data but forcing raw Zend_Http_Response object to be returned, 
 //by passing boolean true for the second argument of the getProfileInfo() method:
 $response = $gravatarService->getProfileInfo('foo@bar.com', true);
@@ -63,7 +68,7 @@ if ($response instanceof Zend_Http_Response) { //true!
 }
 
 //Changing response format to QR Code:
-$gravatarService->setResponseFormat(new NP_Service_Gravatar_Profiles_ResponseFormat_QRCode());
+$gravatarService->setResponseFormat('QRCode');
 //QR Code response can not be exported NP_Gravatar_Profile object, as that 
 //response format type does not implement 
 //NP_Service_Gravatar_Profiles_ResponseFormat_ParserInterface interface, 
