@@ -30,14 +30,13 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Xml
      * @param Zend_Http_Response $response
      * @return NP_Gravatar_Profile|Zend_Http_Response
      */
-    public function profileFromHttpResponse(Zend_Http_Response $response)
+    public static function profileFromHttpResponse(Zend_Http_Response $response)
     {
         $body = $response->getBody();
 
         try {
            $xml = simplexml_load_string($body);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             require_once 'NP/Service/Gravatar/Profiles/ResponseFormat/Exception.php';
             throw new NP_Service_Gravatar_Profiles_ResponseFormat_Exception('Invalid XML response.');
         }
@@ -46,7 +45,7 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Xml
             return $response;
         }
         
-        $profileData = $this->_xmlToArray($xml->entry[0]);
+        $profileData = self::_xmlToArray($xml->entry[0]);
         
         require_once 'NP/Service/Gravatar/Profiles/Profile.php';
         
@@ -59,7 +58,7 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Xml
      * @param SimpleXMLElement $xml
      * @return array
      */
-    protected function _xmlToArray($simpleXmlObject)
+    protected static function _xmlToArray($simpleXmlObject)
     {
         if ($simpleXmlObject instanceof SimpleXMLElement) { //Converting to array.
             $simpleXmlObject = get_object_vars($simpleXmlObject);
@@ -69,12 +68,11 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Xml
             $data = array();
 
             foreach ($simpleXmlObject as $key=>$value) {
-                $data[$key] = $this->_xmlToArray($value);
+                $data[$key] = self::_xmlToArray($value);
             }
 
             return $data;
-        }
-        else {
+        } else {
             return trim((string)$simpleXmlObject);
         }
     }
