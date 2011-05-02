@@ -18,5 +18,15 @@
 
 define('ZEND_FRAMEWORK_PATH', 'path to ZF goes here');
 
-define('GRAVATAR_API_KEY', 'API key goes here');
-define('GRAVATAR_ACCOUNT_EMAIL', 'some gravatar email goes here');
+//Used for both NP_Service_Gravatar_Profiles tests. This should
+//be some valid Gravatar email. Note that only read-only
+//operations will be performed in these unit tests.
+//Leave empty to disable online tests.
+define('GRAVATAR_ACCOUNT_EMAIL', '');
+
+//NP_Service_Gravatar_XmlRpc tests are not dependent on a network
+//connection (not online) and only NP_Service_Gravatar_XmlRpc::test()
+//method can be tested online. Enter valid Gravatar API key (related
+//to the GRAVATAR_ACCOUNT_EMAIL) to enable online testing for the
+//test() method.
+define('GRAVATAR_API_KEY', '');

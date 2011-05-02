@@ -117,6 +117,22 @@ class NP_Service_Gravatar_XmlRpc
     }
 
     /**
+     * Sets XML-RPC client.
+     *
+     * @param Zend_XmlRpc_Client $xmlRpcClient
+     * @return NP_Service_Gravatar_XmlRpc
+     */
+    public function setXmlRpcClient(Zend_XmlRpc_Client $xmlRpcClient)
+    {
+        //Forcing server uri
+        $xmlRpcClient->getHttpClient()->setUri($this->_getServerUri());
+
+        $this->_xmlRpcClient = $xmlRpcClient;
+        
+        return $this;
+    }
+
+    /**
      * Retrieves XML-RPC client instance.
      *
      * If the client hasn't being inizialized yet, then a new
@@ -371,13 +387,14 @@ class NP_Service_Gravatar_XmlRpc
     protected function _call($method, $params = array())
     {
         $params = array_merge($params, array('apikey'=>$this->getApiKey()));
-        
-        $this->getXmlRpcClient()->setSkipSystemLookup(true); //We will manually prepare params.
+
+        $xmlRpcClient = $this->getXmlRpcClient();
+        $xmlRpcClient->setSkipSystemLookup(true); //We will manually prepare params.
         
         try {
-            $retval = $this->getXmlRpcClient()->call(
-                    'grav.' . $method,
-                    array(Zend_XmlRpc_Value::getXmlRpcValue($params, Zend_XmlRpc_Value::XMLRPC_TYPE_STRUCT))
+            $retval = $xmlRpcClient->call(
+                'grav.' . $method,
+                array(Zend_XmlRpc_Value::getXmlRpcValue($params, Zend_XmlRpc_Value::XMLRPC_TYPE_STRUCT))
              );
             
             return $retval;
