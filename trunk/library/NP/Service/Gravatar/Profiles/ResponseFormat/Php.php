@@ -28,7 +28,7 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Php
      * instance.
      *
      * @param Zend_Http_Response $response
-     * @return NP_Gravatar_Profile|Zend_Http_Response
+     * @return NP_Service_Gravatar_Profiles_Profile|Zend_Http_Response
      */
     public static function profileFromHttpResponse(Zend_Http_Response $response)
     {
