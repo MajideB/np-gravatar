@@ -124,8 +124,6 @@ class NP_Service_Gravatar_Profiles_GetProfileInfoTest extends PHPUnit_Framework_
                     );
 
                     $retval = $this->_gravatarService->getProfileInfo('foo@bar.com', true);
-                    $this->assertTrue($retval instanceof Zend_Http_Response);
-                    $this->assertRegExp('#' . $data['content_type'] . '#i', $retval->getHeader('Content-type'));
                 }
             }
 
