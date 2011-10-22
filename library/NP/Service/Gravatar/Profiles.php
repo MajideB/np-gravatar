@@ -26,14 +26,14 @@ class NP_Service_Gravatar_Profiles
      * 
      * @var Zend_Http_Client 
      */
-    protected $_httpClient = null;
+    protected $_httpClient;
 
     /**
      * Response format.
      * 
-     * @var NP_Service_Gravatar_Profiles_ResponseFormat_Abstract|string
+     * @var NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
      */
-    protected $_responseFormat = 'php';
+    protected $_responseFormat;
 
     /**
      * Plugin loader for response format classes.
@@ -47,7 +47,7 @@ class NP_Service_Gravatar_Profiles
      *
      * @return void
      */
-    public function  __construct($responseFormat = null)
+    public function  __construct($responseFormat = 'php')
     {
         if (null !== $responseFormat) {
             $this->setResponseFormat($responseFormat);
@@ -91,7 +91,7 @@ class NP_Service_Gravatar_Profiles
      */
     public function getHttpClient()
     {
-        if (!$this->_httpClient instanceof Zend_Http_Client) {
+        if (null === $this->_httpClient) {
             require_once 'Zend/Http/Client.php';
             $this->_httpClient = new Zend_Http_Client();
         }
@@ -107,6 +107,21 @@ class NP_Service_Gravatar_Profiles
      */
     public function setResponseFormat($responseFormat)
     {
+        if (is_string($responseFormat)) {
+            $class = self::_getPluginLoader()->load($responseFormat, false);
+            if ($class === false) {
+                require_once 'NP/Service/Gravatar/Profiles/Exception.php';
+                throw new NP_Service_Gravatar_Profiles_Exception('Unsupported response format: ' . $responseFormat);
+            }
+            
+            $responseFormat = new $class();
+        }
+
+        if (!$responseFormat instanceof NP_Service_Gravatar_Profiles_ResponseFormat_Abstract) {
+            require_once 'NP/Service/Gravatar/Profiles/Exception.php';
+            throw new NP_Service_Gravatar_Profiles_Exception('Invalid response format has been supplied.');
+        }
+
         $this->_responseFormat = $responseFormat;
         
         return $this;
@@ -119,11 +134,6 @@ class NP_Service_Gravatar_Profiles
      */
     public function getResponseFormat()
     {
-        if (!$this->_responseFormat instanceof NP_Service_Gravatar_Profiles_ResponseFormat_Abstract) {
-            $class = self::_getPluginLoader()->load((string)$this->_responseFormat);
-            $this->_responseFormat = new $class();
-        }
-        
         return $this->_responseFormat;
     }
 
@@ -144,19 +154,17 @@ class NP_Service_Gravatar_Profiles
         $email = strtolower(trim((string)$email));
         $hash = NP_Service_Gravatar_Utility::emailHash($email);
 
-        $responseFormat = $this->getResponseFormat();
-
         $response = $this->getHttpClient()
             ->setMethod(Zend_Http_Client::GET)
-            ->setUri(self::GRAVATAR_SERVER . '/' . $hash . '.' . $responseFormat->__toString())
+            ->setUri(self::GRAVATAR_SERVER . '/' . $hash . '.' . $this->_responseFormat)
             ->request();
 
-        $reflected = new ReflectionObject($responseFormat);
+        $reflected = new ReflectionObject($this->_responseFormat);
         if (
             $reflected->implementsInterface('NP_Service_Gravatar_Profiles_ResponseFormat_ParserInterface')
             && !$rawResponse
          ) {
-            return $responseFormat->profileFromHttpResponse($response);
+            return $this->_responseFormat->profileFromHttpResponse($response);
         } else {
             return $response;
         }
