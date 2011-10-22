@@ -52,4 +52,18 @@ class NP_Service_Gravatar_Profiles_CommonTest extends PHPUnit_Framework_TestCase
         
         $this->assertTrue($gravatarService->getResponseFormat() instanceof NP_Service_Gravatar_Profiles_ResponseFormat_QRCode);
     }
+
+    public function testExceptionShouldBeThrownOnUnsupportedResponseFormat()
+    {
+        $this->setExpectedException('NP_Service_Gravatar_Profiles_Exception');
+
+        $this->_gravatarService->setResponseFormat('foobar');
+    }
+
+    public function testExceptionShouldBeThrownOnInvalidResponseFormat()
+    {
+        $this->setExpectedException('NP_Service_Gravatar_Profiles_Exception');
+
+        $this->_gravatarService->setResponseFormat(123);
+    }
 }

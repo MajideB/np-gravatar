@@ -21,7 +21,10 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Php
     extends NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
     implements NP_Service_Gravatar_Profiles_ResponseFormat_ParserInterface
 {
-    protected $_id = 'php';
+    public function getResponseFormatId()
+    {
+        return 'php';
+    }
 
     /**
      * Parses response body and generates NP_Gravatar_Profile

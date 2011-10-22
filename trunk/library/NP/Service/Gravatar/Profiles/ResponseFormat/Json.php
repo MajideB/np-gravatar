@@ -21,8 +21,11 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_Json
     extends NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
     implements NP_Service_Gravatar_Profiles_ResponseFormat_ParserInterface
 {
-    protected $_id = 'json';
-
+    public function getResponseFormatId()
+    {
+        return 'json';
+    }
+    
     /**
      * Parses response body and generates NP_Gravatar_Profile
      * instance.

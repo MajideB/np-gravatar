@@ -36,11 +36,15 @@ class NP_Service_Gravatar_Profiles_ResponseFormat_AbstractTest extends PHPUnit_F
     public function testResponseFormatId()
     {
         $this->assertSame($this->_responseFormat->getResponseFormatId(), 'foo');
+        $this->assertSame((string)$this->_responseFormat, 'foo');
     }
 }
 
 class ResponseFormat_AbstractTest_CustomFormat
     extends NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
 {
-    protected $_id = 'foo';
+    public function getResponseFormatId()
+    {
+        return 'foo';
+    }
 }

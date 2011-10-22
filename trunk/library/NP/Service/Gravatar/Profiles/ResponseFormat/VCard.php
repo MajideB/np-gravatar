@@ -18,5 +18,8 @@ require_once 'NP/Service/Gravatar/Profiles/ResponseFormat/Abstract.php';
  */
 class NP_Service_Gravatar_Profiles_ResponseFormat_VCard extends NP_Service_Gravatar_Profiles_ResponseFormat_Abstract
 {
-    protected $_id = 'vcf';
+    public function getResponseFormatId()
+    {
+        return 'vcf';
+    }
 }
